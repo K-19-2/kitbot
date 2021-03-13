@@ -124,6 +124,20 @@ async def mantopicerror(ctx, error):
     if isinstance(error, commands.errors.MissingRequiredArgument):
         await ctx.send("Please specify a topic number.")
 
+#manual topic change based on user input
+@bot.command(name="change", help="- Manual topic change based on input for Administrators. For multi-word topics, use \"\", such as $change \"papis cage\"")
+async def change(ctx, manchange):
+    if ctx.message.author.guild_permissions.administrator or ctx.message.author.guild_permissions.manage_channels or ctx.message.author.guild_permissions.manage_roles:
+        channelman = bot.get_channel(810892015713124352) #set manual change channel id here
+        await channelman.edit(name="\N{CALENDAR}daily-topic-" + manchange)
+    else:
+        await ctx.send("How did you find this command? An admin is supposed to do this.")
+        return
+
+@change.error
+async def changeerror(ctx, error):
+        if isinstance(error, commands.errors.MissingRequiredArgument):
+            await ctx.send("Please type a topic. For example, $change icantevenrightnow or $addtopic \"uh no way is that a thing\".")
 
 #emergency shutdown function
 @bot.command(name="shutdown", help="- Emergency shutdown for administrators.")
